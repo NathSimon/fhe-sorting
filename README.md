@@ -6,11 +6,15 @@ Le but de ce projet est de mettre en place une communication client/serveur pour
 
 Les opérations cryptographiques ont été réalisées en utilisant la bibliothèque de l'entreprise [Zama.ai](https://www.zama.ai/).
 
+## Circuit
+
+### Particularité du chiffrement homomorphique pour la comparaison
+
+#### Création du circuit homomorphique
+
 ## Client
 
 ### Chiffrement des données
-
-#### Création du circuit homomorphique
 
 ### Génération des clés
 

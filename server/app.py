@@ -1,8 +1,9 @@
 from flask import Flask, request, jsonify, send_file
 from concrete import fhe
+import argparse
 
 app = Flask(__name__)
-server = fhe.Server.load("server_bubble_sort.zip")
+server = fhe.Server.load("circuits/server_bubble_sort.zip")
 
 @app.route('/infos', methods=['GET'])
 def get_data():
@@ -60,4 +61,10 @@ def download_file(filename):
     return send_file(file_path, as_attachment=True)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8080)
+    parser = argparse.ArgumentParser(description="STU Qr Code reader Connector")
+    parser.add_argument("--host", type=str, default="0.0.0.0", help="Host address to run the API server")
+    parser.add_argument("--port", type=int, default="8000", help="Port to run the API server")
+    args = parser.parse_args()
+
+    print("Welcome to the server side of the fhe-sorting project 🚀")
+    app.run(args.host, args.port)

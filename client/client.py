@@ -34,6 +34,8 @@ def encrypt_file():
         data = file.read()
         inputset = [int(x) for x in data.split("\n") if x != ""]
     
+    print(f"Unsorted values: {inputset}")
+    
     print(f"Encrypting {len(inputset)} elements...")
     enc_data: fhe.Value = client.encrypt(inputset)
     
@@ -50,8 +52,6 @@ def updload_encrypted_file():
         print("Success uploading encrypted file")
     else:
         print(f"Error uploading encrypted file: {response.status_code}")
-    
-    print(response.text)
     return
 
 def process_result():
@@ -89,7 +89,7 @@ def fetch_results():
             print(f"Failed to download the file. Status code: {response.status_code}")
     except Exception as e:
         print(f"An error occurred: {e}")
-
+        
 def is_sorted(arr):
     if len(arr) <= 1:
         return True

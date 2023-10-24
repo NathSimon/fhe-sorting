@@ -45,4 +45,5 @@ print("time = ", time_end - time_start)
 print("homomorphic result = ", result)
 print("python result = ", function(sample))
 
-bubble_circuit.server.save("server_bubble_sort.zip")
+bubble_circuit.server.save("compiled_circuits/server_bubble_sort_chunked.zip")
+bubble_circuit.client.save("../server/circuits/server_bubble_sort_chunked.zip")

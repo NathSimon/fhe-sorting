@@ -6,7 +6,8 @@ configuration = fhe.Configuration(
     show_graph=False,
     show_progress=True,
     progress_title="Sorting:",
-    enable_unsafe_features=True
+    enable_unsafe_features=True,
+    comparison_strategy_preference=fhe.ComparisonStrategy.ONE_TLU_PROMOTED
 )
 
 @fhe.compiler({"array": "encrypted"})
@@ -43,5 +44,5 @@ print("time = ", time_end - time_start)
 print("homomorphic result = ", result)
 print("python result = ", function(sample))
 
-bubble_circuit.server.save("compiled_circuits/server_insertion_sort_chunked.zip")
-bubble_circuit.client.save("../server/circuits/server_insertion_sort_chunked.zip")
+bubble_circuit.server.save("compiled_circuits/server_insertion_sort_OTLU.zip")
+bubble_circuit.client.save("../server/circuits/server_insertion_sort_OTLU.zip")

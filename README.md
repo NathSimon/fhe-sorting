@@ -13,7 +13,7 @@ Les opérations cryptographiques ont été réalisées en utilisant la biblioth�
 Lors de ce projet nous avons réalisé les implémentations des algorithmes de tris suivants, adaptés au chiffrement homomorphique.
 
 - Bubble Sort
-- Insertion Sort - todo
+- Insertion Sort
 - Merge Sort - todo
 - Quick Sort - todo
 - Tim Sort - todo

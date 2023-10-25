@@ -3,7 +3,7 @@ from concrete import fhe
 import argparse
 
 app = Flask(__name__)
-server = fhe.Server.load("circuits/server_bubble_sort.zip")
+#server = fhe.Server.load("circuits/server_bubble_sort_chunked.zip")
 
 @app.route('/infos', methods=['GET'])
 def get_data():
@@ -63,8 +63,27 @@ def download_file(filename):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="STU Qr Code reader Connector")
     parser.add_argument("--host", type=str, default="0.0.0.0", help="Host address to run the API server")
-    parser.add_argument("--port", type=int, default="8000", help="Port to run the API server")
+    parser.add_argument("--port", type=int, default="8080", help="Port to run the API server")
+    parser.add_argument("--algorithm", type=str, default="topk", help="Algorithm to run. Options: bubble, insertion, topk")
+    parser.add_argument("--comparison", type=str, default="OTLU", help="Comparison strategy to use. Options: OTLU, TTLU, chunked")
     args = parser.parse_args()
-
+    
+    if(args.algorithm == "bubble" and args.comparison == "OTLU"):
+        server = fhe.Server.load("circuits/server_bubble_sort_OTLU.zip")
+    elif(args.algorithm == "bubble" and args.comparison == "TTLU"):
+        server = fhe.Server.load("circuits/server_bubble_sort_TTLU.zip")
+    elif(args.algorithm == "bubble" and args.comparison == "chunked"):
+        server = fhe.Server.load("circuits/server_bubble_sort_chunked.zip")  
+    elif(args.algorithm == "insertion" and args.comparison == "OTLU"):
+        server = fhe.Server.load("circuits/server_insertion_sort_OTLU.zip")
+    elif(args.algorithm == "insertion" and args.comparison == "chunked"):
+        server = fhe.Server.load("circuits/server_insertion_sort_chunked.zip")
+    elif(args.algorithm == "topk" and args.comparison == "OTLU"):
+        server = fhe.Server.load("circuits/server_topk_sort_OTLU.zip")    
+    elif(args.algorithm == "topk" and args.comparison == "chunked"):
+        server = fhe.Server.load("circuits/server_topk_sort_chunked.zip")
+    else :
+        print("Invalid algorithm or comparison strategy")
+        exit()
     print("Welcome to the server side of the fhe-sorting project 🚀")
     app.run(args.host, args.port)

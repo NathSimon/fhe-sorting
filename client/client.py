@@ -3,7 +3,7 @@ import numpy as np
 import requests
 import time
 
-server_url = "http://localhost:8080"
+server_url = "http://localhost:8080"    
 
 def get_specs():
     url = server_url + "/getsepcs"
@@ -33,6 +33,8 @@ def encrypt_file():
     with open("unsorted_numbers.txt", "r") as file:
         data = file.read()
         inputset = [int(x) for x in data.split("\n") if x != ""]
+    
+    inputset = np.array(inputset)
     
     print(f"Unsorted values: {inputset}")
     

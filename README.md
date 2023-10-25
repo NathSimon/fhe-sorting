@@ -12,14 +12,25 @@ Les opérations cryptographiques ont été réalisées en utilisant la biblioth�
 
 Lors de ce projet nous avons réalisé les implémentations des algorithmes de tris suivants, adaptés au chiffrement homomorphique.
 
-- Bubble Sort
-- Insertion Sort
-- Merge Sort - todo
-- Quick Sort - todo
-- Tim Sort - todo
-- Tree Sort - todo
-- Heap Sort - todo
+- Algorithmes à base de comparaison
+  - Bubble Sort
+    - sur 20 valeurs
+      - Chunked : 303s compilation
+      - OTLU : 216s compilation
+      - TTLU : 213s compilation
+  - Insertion Sort
+    - Compilation sur 20 valeurs
+      - Chunked : 240s compilation
+      - OTLU : 261s compilation
+      - TTLU : 273s compilation
 
+- Sorting Networks
+  - topk_sorting
+    - Compilation sur 20 valeurs
+      - Chunked : 81s compilation
+      - OTLU : 68s compilation
+      - TTLU : 77s compilation
+  
 ### Compilation des circuits
 
 Pour compiler un circuit il suffit d'executer son script python correspondant. Ce dernier enregistrera un fichier .zip de ce circuit sous `circuits/compiled_circuits`, ainsi que dans le répertoire `server/ciruits` pour faciliter le portage des fichiers sources.
@@ -93,7 +104,7 @@ Lancer depuis python :
 
 ``` bash
 pip install -r server/requirements.txt
-python3 server/app.py
+python3 server/app.py --host [default = "0.0.0.0"] --port [default = "8080"] --algorithm ["bubble","insertion","topk", default="topk"] --comparison ["chunked","OLTU","TTLU", default = "OTLU"]
 ```
 
 Par défaut le serveur se lance sur [localhost](http://localhost:8080) qu port 8080 mais ceci peut être modifié dans les paramètres du de server.py et dans l'url server dans client.py.

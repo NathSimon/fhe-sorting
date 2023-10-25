@@ -26,9 +26,11 @@ def function(array):
     return array
 
 sample = [(np.random.randint(0, 2**4)) for _ in range(20)]
+sample = np.array(sample)
 print("unsorted values = ", sample)
 
 inputset = [[(np.random.randint(0, 2**4)) for _ in range(20)] for _ in range(30)]
+inputset = np.array(inputset)
 
 print("compiling...")
 time_start = time.time()

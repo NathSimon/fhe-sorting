@@ -31,8 +31,8 @@ def send_keys(keys):
         print(f"Error sending keys: {response.status_code}")
         return
 
-def encrypt_file():
-    with open("unsorted_numbers.txt", "r") as file:
+def encrypt_file(file_path):
+    with open(file_path, "r") as file:
         data = file.read()
         inputset = [int(x) for x in data.split("\n") if x != ""]
     
@@ -139,11 +139,11 @@ def setServerCircuit(algorithm, comparison):
         return False
 
 
-def run_sorting_process():
+def run_sorting_process(file_path):
     global client
     client = fhe.Client(get_specs())
     client.keys.generate()
-    encrypt_file()
+    encrypt_file("unsorted_numbers.txt")
     send_keys(client.keys)
     updload_encrypted_file()
     process_result()
@@ -164,24 +164,24 @@ if __name__ == "__main__":
         
     ### Bubble sort ###
     if(setServerCircuit("bubble", "chunked")):
-        run_sorting_process()
+        run_sorting_process("unsorted_numbers.txt")
     if(setServerCircuit("bubble", "OTLU")):
-        run_sorting_process()
+        run_sorting_process("unsorted_numbers.txt")
     if(setServerCircuit("bubble", "TTLU")):
-        run_sorting_process()
+        run_sorting_process("unsorted_numbers.txt")
         
     ### Insertion sort ###
     if(setServerCircuit("insertion", "chunked")):
-        run_sorting_process()
+        run_sorting_process("unsorted_numbers.txt")
     if(setServerCircuit("insertion", "OTLU")):
-        run_sorting_process()
+        run_sorting_process("unsorted_numbers.txt")
     if(setServerCircuit("insertion", "TTLU")):
-        run_sorting_process()
+        run_sorting_process("unsorted_numbers.txt")
         
     ### Topk sort ###
     if(setServerCircuit("topk", "chunked")):
-        run_sorting_process()
+        run_sorting_process("unsorted_numbers.txt")
     if(setServerCircuit("topk", "OTLU")):
-        run_sorting_process()
+        run_sorting_process("unsorted_numbers.txt")
     if(setServerCircuit("topk", "TTLU")):
-        run_sorting_process()
+        run_sorting_process("unsorted_numbers.txt")

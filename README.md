@@ -150,6 +150,3 @@ Enfin, changer l'addresse dans le client par :
 ```pyton
 serveur_url = ubuntu@fhe1.r2.enst.fr:<port>
 ```
-
-
-Bubble OTLU

@@ -10,6 +10,7 @@ WORKDIR /app
 
 COPY requirements.txt /app/
 COPY app.py /app/
+COPY circuits/server_topk_sort_OTLU.zip /app/server_topk_sort_OTLU.zip
 COPY circuits/* /app/circuits/
 
 # Install any needed packages specified in requirements.txt

@@ -1,9 +1,16 @@
 from flask import Flask, request, jsonify, send_file
+import concrete
 from concrete import fhe
 import argparse
 
+import site
+
+print(site.getsitepackages())
+
 app = Flask(__name__)
-#server = fhe.Server.load("circuits/server_bubble_sort_chunked.zip")
+server = fhe.Server.load("server_topk_sort_OTLU.zip") #default circuit
+
+
 
 @app.route('/infos', methods=['GET'])
 def get_data():
@@ -53,37 +60,41 @@ def upload_file():
     file.save("uploaded_file.bin")
     return 'File uploaded successfully', 200
 
-
 @app.route('/download/<filename>', methods=['GET'])
 def download_file(filename):
     # Define the path to the file you want to serve
     file_path = filename  # Replace with the actual file path
     return send_file(file_path, as_attachment=True)
 
+@app.route('/setcircuit', methods=['POST'])
+def set_circuit():
+    
+    global server
+    
+    data = request.get_json()
+    if data is None:
+        return jsonify({"error": "Invalid JSON data"}), 400
+
+    # Access the values in the 'args' dictionary
+    algorithm = data.get("algorithm")
+    comparison = data.get("comparison")
+    
+    if(comparison != "OTLU" and comparison != "TTLU" and comparison != "chunked"):
+        return jsonify({"error": "Invalid comparison strategy"}), 400
+    if(algorithm != "bubble" and algorithm != "topk" and algorithm != "insertion"):
+        return jsonify({"error": "Invalid algorithm"}), 400
+    
+    file_path = "circuits/server_{}_sort_{}.zip".format(algorithm, comparison)
+    print(file_path)
+    server = fhe.Server.load(file_path)
+    
+    return "Success"
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="STU Qr Code reader Connector")
     parser.add_argument("--host", type=str, default="0.0.0.0", help="Host address to run the API server")
     parser.add_argument("--port", type=int, default="8080", help="Port to run the API server")
-    parser.add_argument("--algorithm", type=str, default="topk", help="Algorithm to run. Options: bubble, insertion, topk")
-    parser.add_argument("--comparison", type=str, default="OTLU", help="Comparison strategy to use. Options: OTLU, TTLU, chunked")
     args = parser.parse_args()
-    
-    if(args.algorithm == "bubble" and args.comparison == "OTLU"):
-        server = fhe.Server.load("circuits/server_bubble_sort_OTLU.zip")
-    elif(args.algorithm == "bubble" and args.comparison == "TTLU"):
-        server = fhe.Server.load("circuits/server_bubble_sort_TTLU.zip")
-    elif(args.algorithm == "bubble" and args.comparison == "chunked"):
-        server = fhe.Server.load("circuits/server_bubble_sort_chunked.zip")  
-    elif(args.algorithm == "insertion" and args.comparison == "OTLU"):
-        server = fhe.Server.load("circuits/server_insertion_sort_OTLU.zip")
-    elif(args.algorithm == "insertion" and args.comparison == "chunked"):
-        server = fhe.Server.load("circuits/server_insertion_sort_chunked.zip")
-    elif(args.algorithm == "topk" and args.comparison == "OTLU"):
-        server = fhe.Server.load("circuits/server_topk_sort_OTLU.zip")    
-    elif(args.algorithm == "topk" and args.comparison == "chunked"):
-        server = fhe.Server.load("circuits/server_topk_sort_chunked.zip")
-    else :
-        print("Invalid algorithm or comparison strategy")
-        exit()
-    print("Welcome to the server side of the fhe-sorting project 🚀")
+   
+    print("Welcome to the server application of the fhe-sorting project 🚀")
     app.run(args.host, args.port)

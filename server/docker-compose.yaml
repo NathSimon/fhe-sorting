@@ -1,0 +1,11 @@
+version: '3'
+services:
+  fhe_sorting_server:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    image: fhe_sorting_server
+    container_name: fhe_sorting_container
+    ports:
+      - "8080:8080"
+    privileged: true

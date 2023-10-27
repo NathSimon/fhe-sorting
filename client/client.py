@@ -2,8 +2,10 @@ from concrete import fhe
 import numpy as np
 import requests
 import time
+import json
 
-server_url = "http://localhost:8080"    
+server_url = None  
+client = None
 
 def get_specs():
     url = server_url + "/getsepcs"
@@ -120,9 +122,25 @@ def verify_results():
     else:
         print("The array is not sorted")
     
-if __name__ == "__main__":
-    if(not get_infos()):
-        exit()
+def setServerCircuit(algorithm, comparison):
+    url = server_url + "/setcircuit"
+    data = {
+        "algorithm": algorithm,
+        "comparison": comparison
+    }
+    
+    headers = {'Content-Type': 'application/json'}
+    response = requests.post(url, data=json.dumps(data), headers=headers)
+    if response.status_code == 200:
+        print("Server Circuit set to " +  algorithm + " sort algorithm with " + comparison+ " comparison strategie")
+        return True
+    else:
+        print(f"Error setting circuit to " + algorithm + " sort algorithm with " + comparison+ " comparison strategie :" + f"{response.status_code}")
+        return False
+
+
+def run_sorting_process():
+    global client
     client = fhe.Client(get_specs())
     client.keys.generate()
     encrypt_file()
@@ -131,3 +149,39 @@ if __name__ == "__main__":
     process_result()
     fetch_results()
     verify_results()
+
+def set_server_url(url):
+    global server_url
+    server_url = url
+    
+if __name__ == "__main__":
+
+    set_server_url("http://localhost:8080")
+    
+    if(not get_infos()): # Check if server is running
+        print("Server is not running")
+        exit()
+        
+    ### Bubble sort ###
+    if(setServerCircuit("bubble", "chunked")):
+        run_sorting_process()
+    if(setServerCircuit("bubble", "OTLU")):
+        run_sorting_process()
+    if(setServerCircuit("bubble", "TTLU")):
+        run_sorting_process()
+        
+    ### Insertion sort ###
+    if(setServerCircuit("insertion", "chunked")):
+        run_sorting_process()
+    if(setServerCircuit("insertion", "OTLU")):
+        run_sorting_process()
+    if(setServerCircuit("insertion", "TTLU")):
+        run_sorting_process()
+        
+    ### Topk sort ###
+    if(setServerCircuit("topk", "chunked")):
+        run_sorting_process()
+    if(setServerCircuit("topk", "OTLU")):
+        run_sorting_process()
+    if(setServerCircuit("topk", "TTLU")):
+        run_sorting_process()

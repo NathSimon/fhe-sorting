@@ -49,4 +49,4 @@ print("homomorphic result = ", result)
 print("python result = ", function(sample))
 
 bubble_circuit.server.save("compiled_circuits/server_bubble_sort_OTLU.zip")
-bubble_circuit.client.save("../server/circuits/server_bubble_sort_OTLU.zip")
+bubble_circuit.server.save("../server/circuits/server_bubble_sort_OTLU.zip")

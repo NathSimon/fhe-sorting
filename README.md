@@ -109,21 +109,17 @@ python3 server/app.py --host [default = "0.0.0.0"] --port [default = "8080"] --a
 
 Par défaut le serveur se lance sur [localhost](http://localhost:8080) qu port 8080 mais ceci peut être modifié dans les paramètres du de server.py et dans l'url server dans client.py.
 
-Il est également possible d'utiliser Docker pour lancer le serveur avec le Dockerfile fourni. Celui expose son port 8080, qu'il faudra mapper avec un port de la machine hôte, conformément à l'adresse donnée au client.
+Il est également possible d'utiliser Docker pour lancer le serveur avec docker-compose. Assurez vous d'avoir docker et docker-compose d'installer sur votre machine.
 
-``` bash
-docker build -t <name>:<version>  .
-docker run docker run -p <port>:8080 -d --name <nameOfContainer> <name>:<version>
+Celui expose son port 8080, qu'il faudra mapper avec un port de la machine hôte, conformément à l'adresse donnée au client.
+
+Pour build et run le containeur :
+
+```bash
+docker-compose up
 ```
 
-Example :
-
-``` bash
-docker build -t fhesorting:bubblesort  .
-docker run docker run -p 8080:8080 -d --name fhe fhesorting:bubblesort
-```
-
-Ici sera créé une image fhesorting, puis un contenaire nommé fhe depuis l'image qui mappe son port 8080 au port 8080 de la machine. Il est par la suite possible de communiquer avec le serveur à l'adresse [localhost](http://localhost:8080) au port 8080.
+Il est par la suite possible de communiquer avec le serveur à l'adresse [localhost](http://localhost:8080) au port 8080.
 
 Pour exécuter le client, il suffit de lancer le script suivant :
 
@@ -154,3 +150,6 @@ Enfin, changer l'addresse dans le client par :
 ```pyton
 serveur_url = ubuntu@fhe1.r2.enst.fr:<port>
 ```
+
+
+Bubble OTLU

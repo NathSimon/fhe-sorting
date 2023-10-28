@@ -1,4 +1,4 @@
-# SR2I209 - Projet : Calcul sur données chiffrées dans un cloud
+# SR2I309 - Projet : Calcul sur données chiffrées dans un cloud
 
 Projet réalisé dans le cadre de l'UE SR2I309 par Hamza Zarfaoui et Nathanaël SIMON.
 

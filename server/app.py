@@ -8,9 +8,7 @@ import site
 print(site.getsitepackages())
 
 app = Flask(__name__)
-server = fhe.Server.load("server_topk_sort_OTLU.zip") #default circuit
-
-
+server = fhe.Server.load("circuits/server_topk_sort_OTLU.zip") #default circuit
 
 @app.route('/infos', methods=['GET'])
 def get_data():
@@ -78,16 +76,13 @@ def set_circuit():
     # Access the values in the 'args' dictionary
     algorithm = data.get("algorithm")
     comparison = data.get("comparison")
-    input_size = data.get("input_size")
     
     if(comparison != "OTLU" and comparison != "TTLU" and comparison != "chunked"):
         return jsonify({"error": "Invalid comparison strategy"}), 400
     if(algorithm != "bubble" and algorithm != "topk" and algorithm != "insertion"):
         return jsonify({"error": "Invalid algorithm"}), 400
-    if(input_size != 20 and input_size != 100):
-        return jsonify({"error": "Invalid input size"}), 400
     
-    file_path = "circuits/server_{}_sort_{}_{}.zip".format(algorithm, comparison, input_size)
+    file_path = "circuits/server_{}_sort_{}.zip".format(algorithm, comparison)
     print(file_path)
     server = fhe.Server.load(file_path)
     

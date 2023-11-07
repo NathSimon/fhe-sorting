@@ -122,23 +122,21 @@ def verify_results():
     else:
         print("The array is not sorted")
     
-def setServerCircuit(algorithm, comparison, input_size):
+def setServerCircuit(algorithm, comparison):
     url = server_url + "/setcircuit"
     data = {
         "algorithm": algorithm,
-        "comparison": comparison,
-        "input_size": input_size
+        "comparison": comparison
     }
     
     headers = {'Content-Type': 'application/json'}
     response = requests.post(url, data=json.dumps(data), headers=headers)
     if response.status_code == 200:
-        print("Server Circuit set to " +  algorithm + " sort algorithm with " + comparison+ " comparison strategie")
+        print("Server Circuit set to " +  algorithm + " sort algorithm with " + comparison + " comparison strategie")
         return True
     else:
-        print(f"Error setting circuit to " + algorithm + " sort algorithm with " + comparison+ " comparison strategie :" + f"{response.status_code}")
+        print(f"Error setting circuit to " + algorithm + " sort algorithm with " + comparison + " comparison strategie :" + f"{response.status_code}")
         return False
-
 
 def run_sorting_process(file_path):
     global client
@@ -157,32 +155,32 @@ def set_server_url(url):
     
 if __name__ == "__main__":
 
-    set_server_url("http://localhost:8080")
+    set_server_url("http://fhe2.r2.enst.fr")
     
     if(not get_infos()): # Check if server is running
         print("Server is not running")
         exit()
         
     ### Bubble sort ###
-    if(setServerCircuit("bubble", "chunked", 20)):
+    if(setServerCircuit("bubble", "chunked")):
         run_sorting_process("unsorted_numbers.txt")
-    if(setServerCircuit("bubble", "OTLU", 20)):
+    if(setServerCircuit("bubble", "OTLU")):
         run_sorting_process("unsorted_numbers.txt")
-    if(setServerCircuit("bubble", "TTLU", 20)):
+    if(setServerCircuit("bubble", "TTLU")):
         run_sorting_process("unsorted_numbers.txt")
         
     ### Insertion sort ###
-    if(setServerCircuit("insertion", "chunked", 20)):
+    if(setServerCircuit("insertion", "chunked")):
         run_sorting_process("unsorted_numbers.txt")
-    if(setServerCircuit("insertion", "OTLU", 20)):
+    if(setServerCircuit("insertion", "OTLU")):
         run_sorting_process("unsorted_numbers.txt")
-    if(setServerCircuit("insertion", "TTLU", 20)):
+    if(setServerCircuit("insertion", "TTLU")):
         run_sorting_process("unsorted_numbers.txt")
         
     ### Topk sort ###
-    if(setServerCircuit("topk", "chunked", 20)):
+    if(setServerCircuit("topk", "chunked")):
         run_sorting_process("unsorted_numbers.txt")
-    if(setServerCircuit("topk", "OTLU", 20)):
-        run_sorting_process("unsorted_numbers.txt")
-    if(setServerCircuit("topk", "TTLU", 20)):
+    if(setServerCircuit("topk", "OTLU")):
+       run_sorting_process("unsorted_numbers.txt")
+    if(setServerCircuit("topk", "TTLU")):
         run_sorting_process("unsorted_numbers.txt")

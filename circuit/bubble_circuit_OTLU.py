@@ -3,7 +3,7 @@ import numpy as np
 import time
 
 configuration = fhe.Configuration(
-    show_graph=False,
+    show_graph=True,
     show_progress=True,
     progress_title="Sorting:",
     comparison_strategy_preference=fhe.ComparisonStrategy.ONE_TLU_PROMOTED,
@@ -25,7 +25,7 @@ def function(array):
             break
     return array
 
-sample = [(np.random.randint(0, 2**4)) for _ in range(20)]
+sample = [(np.random.randint(0, 2**4)) for _ in range((20))]
 sample = np.array(sample)
 print("unsorted values = ", sample)
 
@@ -45,8 +45,13 @@ result = bubble_circuit.encrypt_run_decrypt(sample)
 time_end = time.time()
 print("time = ", time_end - time_start)
 
+time_start = time.time()
+python_result = function(sample)
+time_end = time.time()
+print("python time = ", time_end - time_start)
+
 print("homomorphic result = ", result)
-print("python result = ", function(sample))
+print("python result = ", python_result)
 
 bubble_circuit.server.save("compiled_circuits/server_bubble_sort_OTLU.zip")
 bubble_circuit.server.save("../server/circuits/server_bubble_sort_OTLU.zip")

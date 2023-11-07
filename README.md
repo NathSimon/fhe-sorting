@@ -6,6 +6,8 @@ Le but de ce projet est de mettre en place une communication client/serveur pour
 
 Les opérations cryptographiques ont été réalisées en utilisant la bibliothèque de l'entreprise [Zama.ai](https://www.zama.ai/).
 
+Le compte rendu complet du projet est fourni dans dans ce repo.
+
 ## Installation
 
 Clone du projet puis intallation des dépendances pour le client.
@@ -15,9 +17,21 @@ git clone https://github.com/NathSimon/fhe-sorting.git
 pip install -r client/requirements.txt
 ```
 
+### Pour la GUI
+
+La GUI utilise customtkinter, il sera nécessaire de l'installer en plus.
+
+```bash
+sudo apt-get install python3-tk
+pip install tk
+pip install customtkinter
+```
+
+### Pour le serveur
+
 Pour le serveur la procédure est décrite ci dessous.
 
-### Lancer l'application depuis votre machine locale  
+#### Lancer l'application depuis votre machine locale  
 
 Il est possible d'utiliser soit python directement soit docker pour lancer le serveur.
 
@@ -48,7 +62,7 @@ Pour exécuter le client, il suffit de lancer le script suivant :
 python3 client/client.py
 ```
 
-### Sur les VMs mise à disposition
+#### Sur les VMs mise à disposition
 
 Il faut avoir une clé ssh publique enregistrée sur une des deux VMs misent a disposition, ```ubuntu@fhe1.r2.enst.fr``` ou ```ubuntu@fhe2.r2.enst.fr```
 Pour vous y connecter en ssh depuis le réseau de l'école ou bien son vpn :
@@ -56,21 +70,29 @@ Pour vous y connecter en ssh depuis le réseau de l'école ou bien son vpn :
 Il faut par la suite upload les fichiers sources serveur du projet :
 
 ``` bash
-scp -i <path to your private key> -r ./server ubuntu@fhe1.r2.enst.fr:home/ubuntu/app
+scp -i <path to your private key> -r ./server ubuntu@fhe1.r2.enst.fr:home/ubuntu/
 ```
 
 Puis se connecter au serveur en ssh et lancer le serveur depuis une des précédentes méthodes. S'assurer que docker et docker-compose sont installes. Si impossible, utiliser python directement.
 
 ``` bash
 ssh -i <path to your private key> ubuntu@fhe1.r2.enst.fr
-cd app/server
-docker-compose up
+cd server
+docker-compose up --build
+exit
+```
+
+Si le port 80 apparaît comme filtered par le firewall de l'école, il est nécessaire de créer un tunnel ssh entre la VM et la machine locale.
+
+```bash
+sudo ssh -o "IdentitiesOnly=yes" -i <path to your private key> -L 80:localhost:80 ubuntu@fhe2.r2.enst.fr
 ```
 
 Enfin, changer l'addresse dans le client par :
 
 ```pyton
-serveur_url = ubuntu@fhe1.r2.enst.fr:8080
+serveur_url = ubuntu@fhe1.r2.enst.fr:80 si directement sur la VM
+serveur_url = localhost si redirige vers le port 80 de la machine locale en tunnel ssh
 ```
 
 
@@ -82,22 +104,10 @@ Lors de ce projet nous avons réalisé les implémentations des algorithmes de t
 
 - Algorithmes à base de comparaison
   - Bubble Sort
-    - sur 20 valeurs
-      - Chunked : 303s compilation
-      - OTLU : 216s compilation
-      - TTLU : 213s compilation
   - Insertion Sort
-    - Compilation sur 20 valeurs
-      - Chunked : 240s compilation
-      - OTLU : 261s compilation
-      - TTLU : 273s compilation
 
 - Sorting Networks
   - topk_sorting
-    - Compilation sur 20 valeurs
-      - Chunked : 81s compilation
-      - OTLU : 68s compilation
-      - TTLU : 77s compilation
   
 ### Compilation des circuits
 

@@ -43,8 +43,13 @@ result = bubble_circuit.encrypt_run_decrypt(sample)
 time_end = time.time()
 print("time = ", time_end - time_start)
 
+time_start = time.time()
+python_result = function(sample)
+time_end = time.time()
+print("python time = ", time_end - time_start)
+
 print("homomorphic result = ", result)
-print("python result = ", function(sample))
+print("python result = ", python_result)
 
 bubble_circuit.server.save("compiled_circuits/server_insertion_sort_OTLU.zip")
 bubble_circuit.server.save("../server/circuits/server_insertion_sort_OTLU.zip")

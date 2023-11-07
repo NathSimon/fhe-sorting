@@ -6,7 +6,7 @@ import time
 from random import randint
 
 configuration = fhe.Configuration(
-    show_graph=False,
+    show_graph=True,
     show_progress=True,
     progress_title="Sorting:",
     comparison_strategy_preference=fhe.ComparisonStrategy.ONE_TLU_PROMOTED,
@@ -135,15 +135,16 @@ def topk_sorting(x):
 
 
 sample = [(numpy.random.randint(0, 2**4)) for _ in range(20)]
-array = numpy.array(sample)
-print("unsorted values = ", array)
+sample = numpy.array(sample)
+print("unsorted values = ", sample)
 
 inputset = [[(numpy.random.randint(0, 2**4)) for _ in range(20)] for _ in range(30)]
-inpuset = numpy.array(inputset)
+inputset = numpy.array(inputset)
 
 print("compiling...")
 time_start = time.time()
 circuit = topk_sorting.compile(inputset, configuration)
+
 time_end = time.time()
 total_time = time_end - time_start
 print("compiled in : ", total_time)
@@ -154,8 +155,13 @@ result = circuit.encrypt_run_decrypt(sample)
 time_end = time.time()
 print("time = ", time_end - time_start)
 
+time_start = time.time()
+python_result = topk_sorting(sample)
+time_end = time.time()
+print("python time = ", time_end - time_start)
+
 print("homomorphic result = ", result)
-print("python result = ", topk_sorting(array))
+print("python result = ", python_result)
 
 circuit.server.save("compiled_circuits/server_topk_sort_OTLU.zip")
 circuit.server.save("../server/circuits/server_topk_sort_OTLU.zip")
